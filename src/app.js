@@ -30,23 +30,19 @@ app.put("/repositories/:id", (request, response) => {
     return response.status(400).json({ error: 'Repository id is not valid.' })
   }
   
-  const repositoryIndex = repositories.findIndex(repo => repo.id === id)
+  const repository = repositories.find(repo => repo.id === id)
   
-  if (repositoryIndex < 0) {
+  if (!repository) {
     return response.status(400).json({ error: 'Repository not found.' })
   }
   
   const { title, url, techs } = request.body
 
-  const repositoryUpdated = repositories[repositoryIndex]
+  repository.title = title
+  repository.url = url
+  repository.techs = techs
 
-  repositoryUpdated.title = title
-  repositoryUpdated.url = url
-  repositoryUpdated.techs = techs
-
-  repositories[repositoryIndex] = repositoryUpdated
-
-  return response.status(200).json(repositoryUpdated)
+  return response.status(200).json(repository)
 })
 
 app.delete("/repositories/:id", (request, response) => {
@@ -74,17 +70,15 @@ app.post("/repositories/:id/like", (request, response) => {
     return response.status(400).json({ error: 'Repository id is not valid.' })
   }
   
-  const repositoryIndex = repositories.findIndex(repo => repo.id === id)
+  const repository = repositories.find(repo => repo.id === id)
 
-  if (repositoryIndex < 0) {
+  if (!repository) {
     return response.status(400).json({ error: 'Repository not found.' })
   }
 
-  const repositoryUpdated = repositories[repositoryIndex]
-  repositoryUpdated.likes = repositoryUpdated.likes + 1
+  repository.likes += 1
 
-
-  return response.status(200).json(repositoryUpdated)
+  return response.status(200).json(repository)
 })
 
 module.exports = app
