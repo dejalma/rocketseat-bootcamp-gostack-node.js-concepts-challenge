@@ -52,13 +52,13 @@ app.delete("/repositories/:id", (request, response) => {
     return response.status(400).json({ error: 'Repository id is not valid.' })
   }
   
-  const repositoryIndex = repositories.findIndex(repo => repo.id === id)
+  const repository = repositories.find(repo => repo.id === id)
 
-  if (repositoryIndex < 0) {
+  if (!repository) {
     return response.status(400).json({ error: 'Repository not found.' })
   }
 
-  repositories.splice(repositoryIndex, 1)
+  repositories.pop(repository)
 
   return response.status(204).send()
 })
