@@ -47,18 +47,19 @@ app.put("/repositories/:id", (request, response) => {
 
 app.delete("/repositories/:id", (request, response) => {
   const { id } = request.params
+  console.log(`Delete id: ${id}`)
   
   if (!isUuid(id)) {
     return response.status(400).json({ error: 'Repository id is not valid.' })
   }
-  
-  const repository = repositories.find(repo => repo.id === id)
 
-  if (!repository) {
+  const repositoryIndex = repositories.findIndex(repo => repo.id === id)
+
+  if (repositoryIndex < 0) {
     return response.status(400).json({ error: 'Repository not found.' })
   }
 
-  repositories.pop(repository)
+  repositories.splice(repositoryIndex, 1)
 
   return response.status(204).send()
 })
