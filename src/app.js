@@ -71,7 +71,7 @@ app.post("/repositories/:id/like", (request, response) => {
     return response.status(400).json({ error: 'Repository id is not valid.' })
   }
   
-  const repository = repositories.find(repo => repo.id === id)
+  const repository = repositories.find(repository => repository.id === id)
 
   if (!repository) {
     return response.status(400).json({ error: 'Repository not found.' })
